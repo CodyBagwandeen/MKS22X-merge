@@ -17,37 +17,24 @@ public class merge{
     int d1 = data1.length;
     int d2 = data2.length;
     int[] output = new int[d1 + d2];
+    int index1 = 0;
+    int index2 = 0;
 
-    if( d1 < d2 ){// data 1 is the shorter array
-      for(int i = 0; i < d1 ; i++){
-        if(data1[i] > data2[i]){ // i @ data 1 is bigger
-          output[2*i] = data2[i];
-          output[2*i + 1] = data1[i];
-        }else{                  // i @ data 2 is bigger
-          output[2*i] = data1[i];
-          output[2*i + 1] = data2[i];
-        }
-      }
-      for(int i = d1; i < d2; i++){
-        output[2*i] = data2[i];
-      }
-    } else { // data 2 is the shorter array
-      for(int i = 0; i < d1 ; i++){
-        if(data1[i] > data2[i]){ // i @ data 1 is bigger
-          output[2*i] = data2[i];
-          output[2*i + 1] = data1[i];
-        }else{                  // i @ data 2 is bigger
-          output[2*i] = data1[i];
-          output[2*i + 1] = data2[i];
-        }
-      }
-      for(int i = d2; i < d1; i++){
-        output[2*i] = data1[i];
+    for(int i = 0; i < output.length; i++){
+      if( index1 >= data1.length){ // the first array is entirely finsihed
+        output[i] = data2[index2];
+        index2++;
+      }else if( index2 >= data2.length){ // the second array is entirely finsihed
+        output[i] = data1[index1];
+        index1++;
+      }else if( data1[index1] <= data2[index2]){
+        output[i] = data1[index1];
+        index1++;
+      }else if( data2[index2] <= data1[index1]){
+        output[i] = data2[index2];
+        index2++;
       }
     }
-
-
-
 
     return output;
 
