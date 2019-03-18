@@ -3,10 +3,28 @@ import java.util.*;
 
 public class merge{
   public static void main(String[] args){
-    int[] data1 = {1,2};
-    int[] data2 = {7,8} ;
+    int[] a = {};
+    int[] b = {};
+    int[] c = {1,2,3,4,5,6,7,8,9,10};
+    int[] d = {11,12,13,14,15,16,17,18,19,20};
+    int[] e = {1,3,5,7,9,12,14,16,18,20};
+    int[] f = {2,4,6,8,10,11,13,15,17,19};
 
-    System.out.println(Arrays.toString(merge(data1,data2)));
+    System.out.println("Array a :" + Arrays.toString(a));
+    System.out.println("Array b :" + Arrays.toString(b));
+    System.out.println("Array c :" + Arrays.toString(c));
+    System.out.println("Array d :" + Arrays.toString(d));
+    System.out.println("Array e :" + Arrays.toString(e));
+    System.out.println("Array f :" + Arrays.toString(f));
+
+      System.out.println();
+
+    System.out.println("merge on array a and b should be [] ");
+    System.out.println(Arrays.toString(merge(a,b)));
+    System.out.println("merge on array c and d : should be [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19.20]");
+    System.out.println(Arrays.toString(merge(c,d)));
+    System.out.println("merge on array e and f : should be [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19.20]");
+    System.out.println(Arrays.toString(merge(e,f)));
   }
 
   public static void mergesort(int[] data){
@@ -16,7 +34,7 @@ public class merge{
   public static int[] merge(int[] data1, int[] data2){ // takes in 2 sorted arrays and merge them into 1 sorted array
     int d1 = data1.length;
     int d2 = data2.length;
-    int[] output = new int[d1 + d2];
+    int[] output = new int[d1 + d2]; // temp array
     int index1 = 0;
     int index2 = 0;
 
@@ -27,10 +45,10 @@ public class merge{
       }else if( index2 >= data2.length){ // the second array is entirely finsihed
         output[i] = data1[index1];
         index1++;
-      }else if( data1[index1] <= data2[index2]){
+      }else if( data1[index1] <= data2[index2]){ // the number of the first array is smaller or equal
         output[i] = data1[index1];
         index1++;
-      }else if( data2[index2] <= data1[index1]){
+      }else if( data2[index2] <= data1[index1]){ // the number of the second array is smaller or equal
         output[i] = data2[index2];
         index2++;
       }
