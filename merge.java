@@ -17,7 +17,7 @@ public class merge{
     System.out.println("Array e :" + Arrays.toString(e));
     System.out.println("Array f :" + Arrays.toString(f));
 
-      System.out.println();
+    System.out.println();
 
     System.out.println("merge on array a and b should be [] ");
     System.out.println(Arrays.toString(merge(a,b)));
@@ -28,7 +28,31 @@ public class merge{
   }
 
   public static void mergesort(int[] data){
+    mergesortH(data, 0, data.length-1);
+  }
 
+  public static void mergesortH(int[] data, int lo, int hi){
+    if( lo >= hi){
+      return;
+    }
+    int mid = data.length / 2;
+
+    int[] left = new int[mid];
+    for(int i = 0; i < left.length; i++){
+      left[i] = data[i];
+    }
+
+    int[] right = new int[data.length - mid];
+    for(int i= 0; i < right.length;i++){
+      right[i] = data[i+mid];
+    }
+    //mergesort the left side
+    //mergesort the right side
+    //merge
+
+
+    mergesortH(data, lo, mid);
+    mergesortH(data, mid, hi);
   }
 
   public static int[] merge(int[] data1, int[] data2){ // takes in 2 sorted arrays and merge them into 1 sorted array
