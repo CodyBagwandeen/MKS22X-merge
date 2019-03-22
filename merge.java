@@ -35,6 +35,10 @@ public class merge{
     if( lo >= hi){
       return;
     }
+
+    if( hi - lo < 56){
+      insertionsort(data,0,data.length-1);
+    }
     int mid = data.length / 2;
 
     int[] left = new int[mid];
@@ -51,8 +55,9 @@ public class merge{
     //merge
 
 
-    mergesortH(data, lo, mid);
-    mergesortH(data, mid, hi);
+    mergesortH(left, lo, left.length -1);
+    mergesortH(right, left.length, data.length-1);
+    merge(left,right);
   }
 
   public static int[] merge(int[] data1, int[] data2){ // takes in 2 sorted arrays and merge them into 1 sorted array
