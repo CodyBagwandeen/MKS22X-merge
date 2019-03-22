@@ -82,4 +82,17 @@ public class merge{
 
   }
 
+  public static void insertionsort(int[] data, int start, int end){
+    int temp = 0;
+    int temp2 =0;
+    for(int i = start +1; i < end + 1; i++){
+      temp = data[i];
+      for(temp2 = i-1; temp2 >= 0 && data[temp2] > temp; temp2--){
+        data[temp2+1] = data[temp2];
+      }
+      data[temp2+1] = temp;
+    }
+
+  }
+
 }
