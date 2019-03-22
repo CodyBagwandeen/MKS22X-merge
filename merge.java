@@ -1,96 +1,102 @@
 import java.io.*;
 import java.util.*;
 
-public class merge{
+public class Merge{
   public static void main(String[] args){
-    int[] a = {};
-    int[] b = {};
-    int[] c = {1,2,3,4,5,6,7,8,9,10};
-    int[] d = {11,12,13,14,15,16,17,18,19,20};
-    int[] e = {1,3,5,7,9,12,14,16,18,20};
-    int[] f = {2,4,6,8,10,11,13,15,17,19};
-
-    System.out.println("Array a :" + Arrays.toString(a));
-    System.out.println("Array b :" + Arrays.toString(b));
-    System.out.println("Array c :" + Arrays.toString(c));
-    System.out.println("Array d :" + Arrays.toString(d));
-    System.out.println("Array e :" + Arrays.toString(e));
-    System.out.println("Array f :" + Arrays.toString(f));
-
-    System.out.println();
-
-    System.out.println("merge on array a and b should be [] ");
-    System.out.println(Arrays.toString(merge(a,b)));
-    System.out.println("merge on array c and d : should be [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19.20]");
-    System.out.println(Arrays.toString(merge(c,d)));
-    System.out.println("merge on array e and f : should be [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19.20]");
-    System.out.println(Arrays.toString(merge(e,f)));
+    Random random = new Random(1);
+          System.out.println("Size\t\tMax Value\tquick/builtin ratio ");
+          int[]MAX_LIST = {1000000000,500,10};
+          for(int MAX : MAX_LIST){
+              for(int size = 31250; size < 2000001; size*=2){
+                  long qtime=0;
+                  long btime=0;
+                  //average of 5 sorts.
+                  for(int trial = 0 ; trial <=5; trial++){
+                      int []data1 = new int[size];
+                      int []data2 = new int[size];
+                      for(int i = 0; i < data1.length; i++){
+                          data1[i] = (int)(random.nextDouble()*MAX);
+                          data2[i] = data1[i];
+                      }
+                      long t1,t2;
+                      t1 = System.currentTimeMillis();
+                      Merge.mergesort(data2);
+                      t2 = System.currentTimeMillis();
+                      qtime += t2 - t1;
+                      t1 = System.currentTimeMillis();
+                      Arrays.sort(data1);
+                      t2 = System.currentTimeMillis();
+                      btime+= t2 - t1;
+                      if(!Arrays.equals(data1,data2)){
+                          System.out.println("FAIL TO SORT!");
+                          System.exit(0);
+                      }
+                  }
+                  System.out.println(size +"\t\t"+MAX+"\t"+1.0*qtime/btime);
+              }
+              System.out.println();
+          }
   }
 
   public static void mergesort(int[] data){
     mergesortH(data, 0, data.length-1);
   }
 
-  public static void mergesortH(int[] data, int lo, int hi){
-    if( lo >= hi){
+  public static void mergesortH(int[] data, int lo, int hi) {
+    if(lo >= hi){
       return;
     }
 
-    if( hi - lo < 56){
-      insertionsort(data,0,data.length-1);
-    }
-    int mid = data.length / 2;
-
-    int[] left = new int[mid];
-    for(int i = 0; i < left.length; i++){
-      left[i] = data[i];
-    }
-
-    int[] right = new int[data.length - mid];
-    for(int i= 0; i < right.length;i++){
-      right[i] = data[i+mid];
-    }
-    //mergesort the left side
-    //mergesort the right side
-    //merge
-
-
-    mergesortH(left, lo, left.length -1);
-    mergesortH(right, left.length, data.length-1);
-    merge(left,right);
-  }
-
-  public static int[] merge(int[] data1, int[] data2){ // takes in 2 sorted arrays and merge them into 1 sorted array
-    int d1 = data1.length;
-    int d2 = data2.length;
-    int[] output = new int[d1 + d2]; // temp array
-    int index1 = 0;
-    int index2 = 0;
-
-    for(int i = 0; i < output.length; i++){
-      if( index1 >= data1.length){ // the first array is entirely finsihed
-        output[i] = data2[index2];
-        index2++;
-      }else if( index2 >= data2.length){ // the second array is entirely finsihed
-        output[i] = data1[index1];
-        index1++;
-      }else if( data1[index1] <= data2[index2]){ // the number of the first array is smaller or equal
-        output[i] = data1[index1];
-        index1++;
-      }else if( data2[index2] <= data1[index1]){ // the number of the second array is smaller or equal
-        output[i] = data2[index2];
-        index2++;
+    if(hi - lo < 47) {
+        insertionsort(data,0,data.length-1);
+        return;
       }
-    }
 
-    return output;
+      int mid = data.length/2;
+      int[] left = new int[data.length/2];
+      int[] right = new int[data.length - data.length/2];
 
-  }
+      for(int i=0; i<data.length; i++) {
+        if(i < left.length) {
+            left[i] = data[i];
+          } else {
+            right[i-left.length] = data[i];
+          }
+        }
 
-  public static void insertionsort(int[] data, int start, int end){
+        mergesortH(left,0,left.length-1);
+        mergesortH(right,left.length,data.length-1);
+        merge(data,left,right);
+      }
+
+    public static void merge(int[] data, int[] left, int[] right) {
+      int Index1, Index2;
+      Index1 = Index2 = 0;
+      for(int i=0; i<data.length; i++) {
+          if(Index1 >= left.length) {
+              data[i] = right[Index2];
+              Index2 += 1;
+            } else if(Index2 >= right.length) {
+              data[i] = left[Index1];
+              Index1 += 1;
+            } else {
+              if(left[Index1] < right[Index2]) {
+                  data[i] = left[Index1];
+                  Index1 += 1;
+                } else {
+                  data[i] = right[Index2];
+                  Index2 += 1;
+
+                }
+              }
+
+            }
+        }
+
+  public static void insertionsort(int[] data, int lo, int hi){
     int temp = 0;
     int temp2 =0;
-    for(int i = start +1; i < end + 1; i++){
+    for(int i = lo +1; i < hi + 1; i++){
       temp = data[i];
       for(temp2 = i-1; temp2 >= 0 && data[temp2] > temp; temp2--){
         data[temp2+1] = data[temp2];
